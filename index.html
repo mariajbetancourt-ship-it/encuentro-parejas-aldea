@@ -218,42 +218,6 @@
             margin: 0;
         }
 
-        .file-upload {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-            width: 100%;
-        }
-
-        .file-upload input[type=file] {
-            position: absolute;
-            left: -9999px;
-        }
-
-        .file-upload-label {
-            display: block;
-            padding: 15px;
-            border: 2px dashed var(--vinotinto);
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: var(--gris-claro);
-        }
-
-        .file-upload-label:hover {
-            background: var(--rosado-palido);
-            border-color: var(--verde);
-        }
-
-        .file-selected {
-            margin-top: 10px;
-            padding: 10px;
-            background: var(--rosado-palido);
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-
         .submit-btn {
             background: linear-gradient(135deg, var(--vinotinto), var(--verde));
             color: var(--blanco);
@@ -445,16 +409,10 @@
 
                 <div class="form-group">
                     <label for="comprobante">
-                        Comprobante de Pago <span class="required">*</span>
+                        Comprobante de Pago (Opcional por ahora)
                     </label>
-                    <div class="file-upload">
-                        <input type="file" id="comprobante" name="comprobante" required 
-                               accept="image/*,.pdf" onchange="mostrarArchivo(this)">
-                        <label for="comprobante" class="file-upload-label">
-                            📎 Seleccionar archivo (imagen o PDF)
-                        </label>
-                        <div id="archivoSeleccionado" class="file-selected" style="display: none;"></div>
-                    </div>
+                    <input type="text" id="comprobante" name="comprobante" 
+                           placeholder="Describe tu método de pago (ej: Transferencia Nequi a 300123456)">
                 </div>
 
                 <button type="submit" class="submit-btn" id="submitBtn">
@@ -475,30 +433,6 @@
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_X7VDhgNTtkjeJQYIN94tmWTPsPc4fjwAfjI6enmUMlZdkwKvLqaC0s-_TaRrbdmr/exec';
         // ========================================
 
-        function mostrarArchivo(input) {
-            const archivoDiv = document.getElementById('archivoSeleccionado');
-            if (input.files && input.files[0]) {
-                const archivo = input.files[0];
-                archivoDiv.innerHTML = `
-                    <strong>Archivo seleccionado:</strong><br>
-                    📄 ${archivo.name}<br>
-                    📏 ${(archivo.size / 1024 / 1024).toFixed(2)} MB
-                `;
-                archivoDiv.style.display = 'block';
-            } else {
-                archivoDiv.style.display = 'none';
-            }
-        }
-
-        function convertirArchivoABase64(archivo) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = reject;
-                reader.readAsDataURL(archivo);
-            });
-        }
-
         document.getElementById('registroForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -517,26 +451,13 @@
             try {
                 // Obtener datos del formulario
                 const formData = new FormData(this);
-                const archivo = document.getElementById('comprobante').files[0];
-                
-                // Validar que se haya seleccionado un archivo
-                if (!archivo) {
-                    throw new Error('Debe seleccionar un comprobante de pago');
-                }
-                
-                // Convertir archivo a base64
-                const archivoBase64 = await convertirArchivoABase64(archivo);
                 
                 // Preparar datos para envío
                 const datos = {
                     nombrePareja: formData.get('nombrePareja'),
                     numeroContacto: formData.get('numeroContacto'),
                     asistira: formData.get('asistira'),
-                    comprobante: {
-                        nombre: archivo.name,
-                        tipo: archivo.type,
-                        contenido: archivoBase64
-                    },
+                    comprobante: formData.get('comprobante') || 'No especificado',
                     timestamp: new Date().toISOString()
                 };
                 
@@ -553,7 +474,6 @@
                 if (response.ok) {
                     successMessage.style.display = 'block';
                     this.reset();
-                    document.getElementById('archivoSeleccionado').style.display = 'none';
                     
                     // Scroll al mensaje de éxito
                     successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
