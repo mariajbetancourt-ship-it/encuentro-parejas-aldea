@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuentro de Parejas - Aldea de Sueños</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --vinotinto: #722F37;
+            --rosado-palido: #F4C2C2;
+            --verde: #2D5016;
+            --blanco: #FFFFFF;
+            --gris-claro: #F8F9FA;
+            --sombra: rgba(114, 47, 55, 0.15);
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--vinotinto);
+            background: linear-gradient(135deg, var(--rosado-palido) 0%, var(--blanco) 50%, var(--gris-claro) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border: 3px dashed var(--vinotinto);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--blanco);
+            box-shadow: 0 8px 25px var(--sombra);
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-placeholder {
+            color: var(--vinotinto);
+            font-size: 14px;
+            text-align: center;
+            opacity: 0.7;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: var(--vinotinto);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px var(--sombra);
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--verde);
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .main-card {
+            background: var(--blanco);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 15px 35px var(--sombra);
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out 0.3s both;
+            border: 2px solid var(--rosado-palido);
+        }
+
+        .event-details {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .event-details h2 {
+            color: var(--vinotinto);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .event-details h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, var(--vinotinto), var(--verde));
+            border-radius: 2px;
+        }
+
+        .highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .highlight-item {
+            background: linear-gradient(135deg, var(--rosado-palido), var(--blanco));
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid var(--rosado-palido);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .highlight-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--sombra);
+        }
+
+        .highlight-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .price-tag {
+            background: var(--verde);
+            color: var(--blanco);
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            display: inline-block;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(45, 80, 22, 0.3);
+        }
+
+        .form-container {
+            background: var(--blanco);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 15px 35px var(--sombra);
+            animation: fadeInUp 1s ease-out 0.6s both;
+            border-top: 5px solid var(--vinotinto);
+        }
+
+        .form-title {
+            text-align: center;
+            color: var(--vinotinto);
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--vinotinto);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .required {
+            color: var(--verde);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--rosado-palido);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--vinotinto);
+            box-shadow: 0 0 10px rgba(114, 47, 55, 0.2);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 15px;
+            border: 2px dashed var(--vinotinto);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--gris-claro);
+        }
+
+        .file-upload-label:hover {
+            background: var(--rosado-palido);
+            border-color: var(--verde);
+        }
+
+        .file-selected {
+            margin-top: 10px;
+            padding: 10px;
+            background: var(--rosado-palido);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--vinotinto), var(--verde));
+            color: var(--blanco);
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: inherit;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(114, 47, 55, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message, .error-message {
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--vinotinto);
+            font-style: italic;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .main-card, .form-container {
+                padding: 25px;
+            }
+
+            .highlights {
+                grid-template-columns: 1fr;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <img src="https://i.ibb.co/HLQSpVTj/IMG-aldea-logo-removebg-preview.png" alt="Aldea de Sueños" style="max-width: 120px; max-height: 120px; object-fit: contain;">
+            </div>
+            <h1>Encuentro de Parejas</h1>
+            <p class="subtitle">Una noche mágica para celebrar el amor</p>
+        </header>
+
+        <div class="main-card">
+            <div class="event-details">
+                <h2>¡Te invitamos a una velada inolvidable!</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 30px; color: var(--verde);">
+                    Únete a nosotros en una noche especial diseñada para fortalecer los lazos del amor y crear momentos únicos en pareja.
+                </p>
+
+                <div class="highlights">
+                    <div class="highlight-item">
+                        <div class="highlight-icon">🎵</div>
+                        <h3>Música en Vivo</h3>
+                        <p>Melodías románticas para amenizar la velada</p>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">👨‍🏫</div>
+                        <h3>Conferencista</h3>
+                        <p>Charla inspiradora sobre relaciones de pareja</p>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">🍽️</div>
+                        <h3>Cena Especial</h3>
+                        <p>Deliciosa cena preparada especialmente para ti</p>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">🥂</div>
+                        <h3>Brindis</h3>
+                        <p>Celebremos juntos con un brindis por el amor</p>
+                    </div>
+                </div>
+
+                <div class="price-tag">
+                    Cuota de Participación: $100.000 COP
+                </div>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <h2 class="form-title">Confirma tu Asistencia</h2>
+            
+            <div class="success-message" id="successMessage">
+                ¡Registro exitoso! Hemos recibido tu información. Te contactaremos pronto con más detalles.
+            </div>
+            
+            <div class="error-message" id="errorMessage">
+                Hubo un error al procesar tu registro. Por favor, intenta nuevamente.
+            </div>
+
+            <form id="registroForm">
+                <div class="form-group">
+                    <label for="nombrePareja">
+                        Nombre de la Pareja <span class="required">*</span>
+                    </label>
+                    <input type="text" id="nombrePareja" name="nombrePareja" required 
+                           placeholder="Ej: Juan y María Pérez">
+                </div>
+
+                <div class="form-group">
+                    <label for="numeroContacto">
+                        Número de Contacto <span class="required">*</span>
+                    </label>
+                    <input type="tel" id="numeroContacto" name="numeroContacto" required 
+                           placeholder="Ej: 3001234567" pattern="[0-9]+">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        ¿Asistirá al evento? <span class="required">*</span>
+                    </label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="asisteSi" name="asistira" value="Si" required>
+                            <label for="asisteSi">Sí, asistiremos</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="asisteNo" name="asistira" value="No" required>
+                            <label for="asisteNo">No podremos asistir</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="comprobante">
+                        Comprobante de Pago <span class="required">*</span>
+                    </label>
+                    <div class="file-upload">
+                        <input type="file" id="comprobante" name="comprobante" required 
+                               accept="image/*,.pdf" onchange="mostrarArchivo(this)">
+                        <label for="comprobante" class="file-upload-label">
+                            📎 Seleccionar archivo (imagen o PDF)
+                        </label>
+                        <div id="archivoSeleccionado" class="file-selected" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Enviar Respuesta
+                </button>
+            </form>
+        </div>
+
+        <footer class="footer">
+            <p>Con amor, el equipo de Aldea de Sueños 💕</p>
+        </footer>
+    </div>
+
+    <script>
+        // ========================================
+        // URL DE GOOGLE APPS SCRIPT CONECTADA
+        // ========================================
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxMf4TE28XumO-PoZEBElzHfkGyGAMFdL8ns0_EBj-J_wuvTQlVPxqiM6JuyG9-xqah/exec';
+        // ========================================
+
+        function mostrarArchivo(input) {
+            const archivoDiv = document.getElementById('archivoSeleccionado');
+            if (input.files && input.files[0]) {
+                const archivo = input.files[0];
+                archivoDiv.innerHTML = `
+                    <strong>Archivo seleccionado:</strong><br>
+                    📄 ${archivo.name}<br>
+                    📏 ${(archivo.size / 1024 / 1024).toFixed(2)} MB
+                `;
+                archivoDiv.style.display = 'block';
+            } else {
+                archivoDiv.style.display = 'none';
+            }
+        }
+
+        function convertirArchivoABase64(archivo) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(archivo);
+            });
+        }
+
+        document.getElementById('registroForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Ocultar mensajes anteriores
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Deshabilitar botón y mostrar loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+            
+            try {
+                // Obtener datos del formulario
+                const formData = new FormData(this);
+                const archivo = document.getElementById('comprobante').files[0];
+                
+                // Validar que se haya seleccionado un archivo
+                if (!archivo) {
+                    throw new Error('Debe seleccionar un comprobante de pago');
+                }
+                
+                // Convertir archivo a base64
+                const archivoBase64 = await convertirArchivoABase64(archivo);
+                
+                // Preparar datos para envío
+                const datos = {
+                    nombrePareja: formData.get('nombrePareja'),
+                    numeroContacto: formData.get('numeroContacto'),
+                    asistira: formData.get('asistira'),
+                    comprobante: {
+                        nombre: archivo.name,
+                        tipo: archivo.type,
+                        contenido: archivoBase64
+                    },
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Enviar datos a Google Apps Script
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(datos)
+                });
+                
+                if (response.ok) {
+                    successMessage.style.display = 'block';
+                    this.reset();
+                    document.getElementById('archivoSeleccionado').style.display = 'none';
+                    
+                    // Scroll al mensaje de éxito
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = `Error: ${error.message}`;
+                
+                // Scroll al mensaje de error
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } finally {
+                // Rehabilitar botón
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Respuesta';
+            }
+        });
+
+        // Validación en tiempo real para número de contacto
+        document.getElementById('numeroContacto').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+    </script>
+</body>
+</html>
