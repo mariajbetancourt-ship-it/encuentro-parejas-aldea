@@ -218,6 +218,42 @@
             margin: 0;
         }
 
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 15px;
+            border: 2px dashed var(--vinotinto);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--gris-claro);
+        }
+
+        .file-upload-label:hover {
+            background: var(--rosado-palido);
+            border-color: var(--verde);
+        }
+
+        .file-selected {
+            margin-top: 10px;
+            padding: 10px;
+            background: var(--rosado-palido);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
         .submit-btn {
             background: linear-gradient(135deg, var(--vinotinto), var(--verde));
             color: var(--blanco);
@@ -366,59 +402,29 @@
         <div class="form-container">
             <h2 class="form-title">Confirma tu Asistencia</h2>
             
-            <div class="success-message" id="successMessage">
-                ¡Registro exitoso! Hemos recibido tu información. Te contactaremos pronto con más detalles.
-            </div>
+            <p style="text-align: center; margin-bottom: 30px; color: var(--verde); font-size: 1.1rem;">
+                Por favor llena este formulario para confirmar tu participación:
+            </p>
             
-            <div class="error-message" id="errorMessage">
-                Hubo un error al procesar tu registro. Por favor, intenta nuevamente.
+            <!-- GOOGLE FORM EMBEBIDO -->
+            <iframe 
+                src="https://docs.google.com/forms/d/e/1FAIpQLSeBKx0-ip1HG-Y_n59mKEFAFDIKb1Mxsx7qfNzdhw7l9IwFxw/viewform?embedded=true" 
+                width="100%" 
+                height="800" 
+                frameborder="0" 
+                marginheight="0" 
+                marginwidth="0"
+                style="border-radius: 15px; box-shadow: 0 5px 15px var(--sombra);">
+                Cargando formulario...
+            </iframe>
+            
+            <div style="margin-top: 20px; text-align: center; color: var(--vinotinto); font-style: italic;">
+                Si el formulario no se muestra correctamente, 
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeBKx0-ip1HG-Y_n59mKEFAFDIKb1Mxsx7qfNzdhw7l9IwFxw/viewform" 
+                   target="_blank" style="color: var(--verde); text-decoration: none;">
+                   haz clic aquí para abrirlo
+                </a>
             </div>
-
-            <form id="registroForm">
-                <div class="form-group">
-                    <label for="nombrePareja">
-                        Nombre de la Pareja <span class="required">*</span>
-                    </label>
-                    <input type="text" id="nombrePareja" name="nombrePareja" required 
-                           placeholder="Ej: Juan y María Pérez">
-                </div>
-
-                <div class="form-group">
-                    <label for="numeroContacto">
-                        Número de Contacto <span class="required">*</span>
-                    </label>
-                    <input type="tel" id="numeroContacto" name="numeroContacto" required 
-                           placeholder="Ej: 3001234567" pattern="[0-9]+">
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        ¿Asistirá al evento? <span class="required">*</span>
-                    </label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="asisteSi" name="asistira" value="Si" required>
-                            <label for="asisteSi">Sí, asistiremos</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="asisteNo" name="asistira" value="No" required>
-                            <label for="asisteNo">No podremos asistir</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="comprobante">
-                        Comprobante de Pago (Opcional por ahora)
-                    </label>
-                    <input type="text" id="comprobante" name="comprobante" 
-                           placeholder="Describe tu método de pago (ej: Transferencia Nequi a 300123456)">
-                </div>
-
-                <button type="submit" class="submit-btn" id="submitBtn">
-                    Enviar Respuesta
-                </button>
-            </form>
         </div>
 
         <footer class="footer">
@@ -432,6 +438,30 @@
         // ========================================
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_X7VDhgNTtkjeJQYIN94tmWTPsPc4fjwAfjI6enmUMlZdkwKvLqaC0s-_TaRrbdmr/exec';
         // ========================================
+
+        function mostrarArchivo(input) {
+            const archivoDiv = document.getElementById('archivoSeleccionado');
+            if (input.files && input.files[0]) {
+                const archivo = input.files[0];
+                archivoDiv.innerHTML = `
+                    <strong>Archivo seleccionado:</strong><br>
+                    📄 ${archivo.name}<br>
+                    📏 ${(archivo.size / 1024 / 1024).toFixed(2)} MB
+                `;
+                archivoDiv.style.display = 'block';
+            } else {
+                archivoDiv.style.display = 'none';
+            }
+        }
+
+        function convertirArchivoABase64(archivo) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(archivo);
+            });
+        }
 
         document.getElementById('registroForm').addEventListener('submit', async function(e) {
             e.preventDefault();
