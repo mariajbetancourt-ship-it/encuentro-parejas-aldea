@@ -272,6 +272,17 @@
             50% { transform: scale(1.1); }
         }
 
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 12px 30px rgba(255, 107, 107, 0.6);
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -346,6 +357,9 @@
 
                 <div class="price-tag">
                     Cuota de Participación: $100.000 COP
+                </div>
+                <div style="background: linear-gradient(135deg, #ff6b6b, #ee5a6f); color: white; padding: 20px 30px; border-radius: 15px; font-size: 1.4rem; font-weight: bold; margin-top: 25px; box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4); border: 3px solid #ff4757; animation: pulse 2s infinite;">
+                    ⏰ FECHA LÍMITE: VIERNES 7 DE NOVIEMBRE ⏰
                 </div>
             </div>
         </div>
